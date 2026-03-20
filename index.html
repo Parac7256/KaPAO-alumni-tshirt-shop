@@ -108,32 +108,48 @@
   };
 
   // --- 5. REAL-TIME TABLE UPDATE ---
-  onValue(ref(db, 'orders'), (snapshot) => {
+onValue(ref(db, 'orders'), (snapshot) => {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = "";
     const data = snapshot.val();
 
     if (data) {
-      Object.keys(data).forEach(id => {
-        const order = data[id];
-        const row = document.createElement('tr');
-        
-        row.innerHTML = `
-          <td>${order.nickname}</td>
-          <td>${order.size}</td>
-          <td>${order.paid ? "Paid ✓" : "Pending"}</td>
-          <td><button onclick="deleteOrder('${id}')" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer;">Delete</button></td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-  });
+        Object.keys(data).forEach(id => {
+            const order = data[id];
+            const row = document.createElement('tr');
 
-  window.deleteOrder = (id) => {
-    if(confirm("Delete this order?")) {
-      remove(ref(db, `orders/${id}`));
+            // Logic: Show "Paid ✓" or the "Pay Now" button
+            const statusContent = order.paid 
+                ? `<span style="color: green; font-weight: bold;">Paid ✓</span>` 
+                : `<button onclick="window.payNow('${id}')" style="background-color: #007dfe; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">Pay Now</button>`;
+
+            row.innerHTML = `
+                <td>${order.nickname}</td>
+                <td>${order.size}</td>
+                <td>${statusContent}</td>
+                <td><button onclick="window.deleteOrder('${id}')" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">Delete</button></td>
+            `;
+            tableBody.appendChild(row);
+        });
     }
-  };
+});
+
+// --- 6. GLOBAL FUNCTIONS ---
+window.payNow = (id) => {
+    window.open('https://www.gcash.com/', '_blank'); // Change to your GCash link later
+    alert("Please send your payment. The admin will verify it and update your status to 'Paid ✓'.");
+};
+
+window.deleteOrder = (id) => {
+    const password = prompt("Enter Admin Password to delete:");
+    if (password === "1234") {
+        if (confirm("Delete this order?")) {
+            remove(ref(db, `orders/${id}`));
+        }
+    } else {
+        alert("Wrong password!");
+    }
+};
 </script>
 </body>
 </html>
