@@ -119,9 +119,9 @@ onValue(ref(db, 'orders'), (snapshot) => {
             const row = document.createElement('tr');
 
             // If paid is true, show green check. If not, show Pay Now.
-            const statusContent = order.paid 
-                ? `<span style="color: green; font-weight: bold;">Paid ✓ ${order.refNum || ''}</span>` 
-                : `<button onclick="window.customerPay('${id}')" style="background-color: #007dfe; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px;">Pay Now</button>`;
+    const statusContent = order.paid 
+    ? `<span style="background-color: white; color: #28a745; font-weight: bold; padding: 4px 12px; border-radius: 50px; border: 2px solid #28a745; box-shadow: 0 2px 4px rgba(0,0,0,0.5); font-size: 13px;">Paid ✓</span>` 
+    : `<button onclick="window.customerPay('${id}')" style="background-color: #007dfe; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">Pay Now</button>`;
 
             row.innerHTML = `
                 <td>${order.nickname}</td>
