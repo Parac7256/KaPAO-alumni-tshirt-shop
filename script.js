@@ -49,7 +49,7 @@ function saveOrder() {
     
     // Reset inputs
     nameInput.value = "";
-    document.getElementById('save-btn').style.display = "none";
+    
     document.getElementById('order-form').style.display = "none";
 }
 
