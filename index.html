@@ -50,9 +50,9 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-  // PASTE YOUR ACTUAL CONFIG HERE FROM THE FIREBASE CONSOLE
+  // Use your actual config from Firebase here
   const firebaseConfig = {
-    apiKey: "AIza...",
+    apiKey: "AIza...", 
     authDomain: "kapao-t-shirt.firebaseapp.com",
     databaseURL: "https://kapao-t-shirt-default-rtdb.firebaseio.com",
     projectId: "kapao-t-shirt",
@@ -64,91 +64,54 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // --- 1. SAVE ORDER TO CLOUD ---
-  window.saveOrder = function() {
-    const nameInput = document.getElementById('nickname');
-    const sizeInput = document.getElementById('tshirt-size');
-
-    if (nameInput.value.trim() === "") {
-      alert("Please enter a nickname!");
-      return;
-    }
-
-    const newOrder = {
-      nickname: nameInput.value,
-      size: sizeInput.value,
-      paid: false
-    };
-
-    push(ref(db, 'orders'), newOrder); // Sends to Firebase
-    
-    nameInput.value = "";
-    document.getElementById('order-form').style.display = "none";
-    document.getElementById('save-btn').style.display = "none";
+  // --- BUTTON FUNCTIONS (Globalized with 'window.') ---
+  window.showOrderForm = () => {
+    document.getElementById('order-form').style.display = "block";
   };
 
-  // --- 2. LISTEN FOR UPDATES (REAL-TIME) ---
-  onValue(ref(db, 'orders'), (snapshot) => {
-    const data = snapshot.val();
-    renderTable(data);
-  });
+  window.viewList = () => {
+    const list = document.getElementById('order-list-section');
+    list.style.display = (list.style.display === "none") ? "block" : "none";
+  };
 
-  // --- 3. RENDER TABLE WITH GCASH & ADMIN LOGIC ---
-  function renderTable(ordersData) {
+  window.saveOrder = () => {
+    const nickname = document.getElementById('nickname').value;
+    const size = document.getElementById('tshirt-size').value;
+
+    if (!nickname) return alert("Enter a nickname!");
+
+    push(ref(db, 'orders'), {
+      nickname: nickname,
+      size: size,
+      paid: false
+    });
+
+    document.getElementById('nickname').value = "";
+    document.getElementById('order-form').style.display = "none";
+  };
+
+  // --- REAL-TIME TABLE UPDATE ---
+  onValue(ref(db, 'orders'), (snapshot) => {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = "";
+    const data = snapshot.val();
 
-    if (!ordersData) return;
+    if (data) {
+      Object.keys(data).forEach(id => {
+        const order = data[id];
+        const row = `<tr>
+          <td>${order.nickname}</td>
+          <td>${order.size}</td>
+          <td>${order.paid ? "Paid" : "Pending"}</td>
+          <td><button onclick="deleteOrder('${id}')">Delete</button></td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+  });
 
-    Object.keys(ordersData).forEach((orderId) => {
-      const order = ordersData[orderId];
-      const row = tableBody.insertRow();
-      
-      row.insertCell(0).textContent = order.nickname;
-      row.insertCell(1).textContent = order.size;
-      
-      // Payment Cell Logic
-      const payCell = row.insertCell(2);
-      const payBtn = document.createElement('button');
-      
-      if (order.paid) {
-        payBtn.innerHTML = "Paid ✓";
-        payBtn.style.backgroundColor = "#28a745";
-        payBtn.disabled = true;
-      } else {
-        payBtn.innerHTML = "Pay Now";
-        payBtn.onclick = () => {
-          const password = prompt("Enter Admin Password (or Cancel for GCash):");
-          if (password === "1234") {
-            update(ref(db, `orders/${orderId}`), { paid: true });
-          } else {
-            window.location.href = "gcash://";
-          }
-        };
-      }
-      payCell.appendChild(payBtn);
-
-      // Remove Logic
-      const removeCell = row.insertCell(3);
-      const removeBtn = document.createElement('button');
-      removeBtn.innerHTML = "Remove";
-      removeBtn.onclick = () => {
-        if(confirm("Delete this order?")) {
-          remove(ref(db, `orders/${orderId}`));
-        }
-      };
-      removeCell.appendChild(removeBtn);
-    });
-  }
-
-  // --- 4. TOGGLE VIEW LIST ---
-  window.viewList = function() {
-    const listSection = document.getElementById('order-list-section');
-    listSection.style.display = (listSection.style.display === "none") ? "block" : "none";
-  };
-
-  window.showOrderForm = function() {
-    document.getElementById('order-form').style.display = "block";
+  window.deleteOrder = (id) => {
+    if(confirm("Delete?")) remove(ref(db, `orders/${id}`));
   };
 </script>
 </body>
