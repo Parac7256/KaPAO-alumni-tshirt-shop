@@ -130,14 +130,17 @@ onValue(ref(db, 'orders'), (snapshot) => {
     : `<button onclick="window.customerPay('${id}')" style="background-color: #007dfe; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">Pay Now</button>`;
 
             row.innerHTML = `
-                <td>${order.nickname}</td>
-                <td>${order.size}</td>
-                <td>${statusContent}</td>
-                <td>
-                    ${!order.paid ? `<button onclick="window.adminConfirm('${id}')" style="background-color: #28a745; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px; margin-right: 5px;">Confirm</button>` : ''}
-                    <button onclick="window.deleteOrder('${id}')" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px;">Delete</button>
-                </td>
-            `;
+    <td>${order.nickname}</td>
+    <td>${order.size}</td>
+    <td>${statusContent}</td>
+    <td>
+        ${!order.paid ? `<button onclick="window.adminConfirm('${id}')" style="background-color: #28a745; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px; margin-right: 5px;">Confirm</button>` : ''}
+        
+        <button onclick="window.editNickname('${id}', '${order.nickname}')" style="background-color: #6c757d; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px; margin-right: 5px;">Edit</button>
+        
+        <button onclick="window.deleteOrder('${id}')" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 4px;">Delete</button>
+    </td>
+`;
             tableBody.appendChild(row);
         });
     }
@@ -176,6 +179,18 @@ window.deleteOrder = (id) => {
         }
     } else {
         alert("Wrong password!");
+    }
+};
+// Function to edit nickname - No password required
+window.editNickname = (id, currentName) => {
+    const newName = prompt("Edit Nickname Spelling:", currentName);
+    
+    if (newName !== null && newName.trim() !== "") {
+        // We use 'update' to only change the nickname field
+        const orderRef = ref(db, `orders/${id}`);
+        update(orderRef, { nickname: newName })
+            .then(() => console.log("Spelling fixed!"))
+            .catch((error) => alert("Error updating: " + error.message));
     }
 };
 // --- 6. GLOBAL FUNCTIONS ---
