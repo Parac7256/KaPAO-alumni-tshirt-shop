@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    
+    <title> KaPAO T-shirt Shop</title>
+    <link rel ="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+<h1 id="product-title">KaPAO T-shirt</h1>
+
+<button class="get-shirt" onclick="showOrderForm()">New Order</button>
+<button class="order-list" onclick="viewList()">View Order list</button>
+<div id="order-form" style= "display: none; margin-top: 20px;">
+  <p>Nickname: <input type="text" id="nickname"></p>
+  <p>Size: 
+    <select id="tshirt-size">
+      <option value="XS">Extra Small</option>
+      <option value="S">Small</option>
+      <option value="M">Medium</option>
+      <option value="L">Large</option>
+      <option value="XL">Extra Large</option>
+      <option value="XXL">Extra-Extra-Large</option>
+    </select>
+  </p>
+  <button id="save-btn" class="save-btn" onclick="saveOrder()">Save Order</button>
+</div>
+
+<div id="order-list-section" style="display: none; margin-top: 30px;">
+    <h3>Order Summary</h3>
+    <table id="order-table" border="1" style="width:100%; text-align: center; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th>Nickname</th>
+                <th>Size</th>
+                <th>payment</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            </tbody>
+    </table>
+  
+</div>
+</body>
+</html>
+

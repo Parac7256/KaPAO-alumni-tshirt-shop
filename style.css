@@ -1,0 +1,162 @@
+﻿h1 {
+  text-align: center;
+  font-size: 80px;
+  color: 
+}
+#product-title {
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    
+    /* 1. Create the Gradient Text */
+    background: linear-gradient(to bottom, #cf86ff, #0055ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* 2. Add the 3D Depth */
+    text-shadow: 
+        0 1px 0 rgba(0,0,0,0.2), 
+        0 2px 0 rgba(0,0,0,0.2), 
+        0 3px 0 rgba(0,0,0,0.2), 
+        0 4px 0 rgba(0,0,0,0.2), 
+        0 5px 0 rgba(0,0,0,0.2), 
+        0 10px 20px rgba(0,0,0,0.4);
+        
+    margin-bottom: 30px;
+}
+#product-title {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.get-shirt {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color: rgb(56, 89, 200);
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.15s, color 0.15s;
+  cursor: pointer;
+}
+.get-shirt:hover {
+  background-color: white;
+  color: rgb(56, 89, 200);
+}
+.get-shirt:active {
+  opacity: 0.3;
+}
+#order-form {
+  text-align: center;
+}
+.save-btn {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+  background-color: rgb(200, 12, 200);
+  color: white;
+  cursor: pointer;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  font-size: 20px;
+}
+.save-btn:hover {
+  opacity: 0.67;
+}
+.save-btn:active {
+  opacity: 0.34;
+}
+.order-list {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color: rgb(56, 89, 200);
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.15s, color 0.15s;
+  cursor: pointer;
+}
+.order-list:hover {
+  background-color: white;
+  color: rgb(56, 89, 200);
+}
+.order-list:active {
+  opacity: 0.56;
+}
+.pay-btn {
+  background-color: rgb(23, 189, 78);
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/*===========*/
+.row-remove-btn {
+    background-color: #ff4d4d; /* Red for delete */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.row-remove-btn:hover {
+    background-color: #cc0000;
+}
+/*-----------------*/
+.back-btn {
+    background-color: #6c757d; /* A neutral gray color */
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
+}
+/*========================*/
+body {
+    /* Replace the URL below with your actual uploaded image link */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                      url('https://i.ibb.co/3Y7XrpWn/607.jpg');
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps the shirt still while you scroll the list */
+    margin: 0;
+    padding: 20px;
+    color: white; /* Makes your main text white to pop against the dark shirt */
+}
+/*===============*/
+/* Target the header row specifically */
+#order-table thead tr {
+    background-color: #0055ff !important; /* GCash Blue */
+    color: white; /* Makes the text "Nickname", "Size", etc. white */
+}
+
+/* Optional: Make the header text bold and clean */
+#order-table th {
+    padding: 12px;
+    text-transform: uppercase;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
