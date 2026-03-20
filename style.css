@@ -38,7 +38,7 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  padding: 10px 20px;
+  padding: 46px 60px;
   border-radius: 20px;
   background-color: rgb(56, 89, 200);
   color: white;
@@ -64,7 +64,7 @@
   background-color: rgb(200, 12, 200);
   color: white;
   cursor: pointer;
-  padding: 10px 15px;
+  padding: 20px 35px;
   border: none;
   border-radius: 20px;
   font-size: 20px;
@@ -80,7 +80,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
-  padding: 10px 20px;
+  padding: 46px 60px;
   border-radius: 20px;
   background-color: rgb(56, 89, 200);
   color: white;
