@@ -80,8 +80,14 @@
 
   // --- 4. BUTTON FUNCTIONS (Globalized with 'window.') ---
   window.showOrderForm = () => {
-    document.getElementById('order-form').style.display = "block";
-  };
+    const form = document.getElementById('order-form');
+    // If it is currently showing, hide it. If it is hidden, show it.
+    if (form.style.display === "block") {
+        form.style.display = "none";
+    } else {
+        form.style.display = "block";
+    }
+};
 
   window.viewList = () => {
     const list = document.getElementById('order-list-section');
