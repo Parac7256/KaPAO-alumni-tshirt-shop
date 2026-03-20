@@ -25,10 +25,6 @@ function saveOrder() {
     const nameInput = document.getElementById('nickname');
     const sizeInput = document.getElementById('tshirt-size');
     
-    if (nameInput.value.trim() === "") {
-        alert("Please enter a nickname!");
-        return;
-    }
 
     // Create a data object for this order
     const newOrder = {
