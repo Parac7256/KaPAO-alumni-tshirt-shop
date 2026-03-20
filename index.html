@@ -47,12 +47,13 @@
 </div>
 
 <script type="module">
+  // 1. Firebase Imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-  // Use your actual config from Firebase here
+  // 2. Firebase Configuration (Paste your FULL config from Firebase Console here)
   const firebaseConfig = {
-    apiKey: "AIza...", 
+    apiKey: "YOUR_FULL_API_KEY", 
     authDomain: "kapao-t-shirt.firebaseapp.com",
     databaseURL: "https://kapao-t-shirt-default-rtdb.firebaseio.com",
     projectId: "kapao-t-shirt",
@@ -61,36 +62,52 @@
     appId: "1:817922399583:web:02b394cd2726f7827d2aea"
   };
 
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // --- BUTTON FUNCTIONS (Globalized with 'window.') ---
+  // --- 3. INPUT LISTENER (Show/Hide Save Button) ---
+  const nicknameInput = document.getElementById('nickname');
+  const saveButton = document.getElementById('save-btn');
+
+  nicknameInput.oninput = function() {
+    if (nicknameInput.value.trim() !== "") {
+      saveButton.style.display = "block";
+    } else {
+      saveButton.style.display = "none";
+    }
+  };
+
+  // --- 4. BUTTON FUNCTIONS (Globalized with 'window.') ---
   window.showOrderForm = () => {
     document.getElementById('order-form').style.display = "block";
   };
 
   window.viewList = () => {
     const list = document.getElementById('order-list-section');
-    list.style.display = (list.style.display === "none") ? "block" : "none";
+    list.style.display = (list.style.display === "none" || list.style.display === "") ? "block" : "none";
   };
 
   window.saveOrder = () => {
-    const nickname = document.getElementById('nickname').value;
-    const size = document.getElementById('tshirt-size').value;
+    const nameValue = nicknameInput.value.trim();
+    const sizeValue = document.getElementById('tshirt-size').value;
 
-    if (!nickname) return alert("Enter a nickname!");
+    // Only save if nickname is NOT empty (no alert needed now)
+    if (nameValue !== "") {
+      push(ref(db, 'orders'), {
+        nickname: nameValue,
+        size: sizeValue,
+        paid: false
+      });
 
-    push(ref(db, 'orders'), {
-      nickname: nickname,
-      size: size,
-      paid: false
-    });
-
-    document.getElementById('nickname').value = "";
-    document.getElementById('order-form').style.display = "none";
+      // Reset form
+      nicknameInput.value = "";
+      saveButton.style.display = "none";
+      document.getElementById('order-form').style.display = "none";
+    }
   };
 
-  // --- REAL-TIME TABLE UPDATE ---
+  // --- 5. REAL-TIME TABLE UPDATE ---
   onValue(ref(db, 'orders'), (snapshot) => {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = "";
@@ -99,19 +116,23 @@
     if (data) {
       Object.keys(data).forEach(id => {
         const order = data[id];
-        const row = `<tr>
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
           <td>${order.nickname}</td>
           <td>${order.size}</td>
-          <td>${order.paid ? "Paid" : "Pending"}</td>
-          <td><button onclick="deleteOrder('${id}')">Delete</button></td>
-        </tr>`;
-        tableBody.innerHTML += row;
+          <td>${order.paid ? "Paid ✓" : "Pending"}</td>
+          <td><button onclick="deleteOrder('${id}')" style="background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer;">Delete</button></td>
+        `;
+        tableBody.appendChild(row);
       });
     }
   });
 
   window.deleteOrder = (id) => {
-    if(confirm("Delete?")) remove(ref(db, `orders/${id}`));
+    if(confirm("Delete this order?")) {
+      remove(ref(db, `orders/${id}`));
+    }
   };
 </script>
 </body>
