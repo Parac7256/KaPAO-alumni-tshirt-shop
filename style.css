@@ -3,6 +3,24 @@
   font-size: 80px;
   color: 
 }
+.nickname {
+  font-size: 50px;
+  font-weight: bold;
+}
+.size {
+  font-size: 50px;
+  font-weight: bold;
+}
+#nickname {
+  width: 200px;
+  height: 33px;
+  border-style: solid;
+  border-color: black;
+}
+#tshirt-size {
+  padding: 0 30px;
+  font-size: 30px;
+}
 #product-title {
     font-size: 60px;
     font-weight: bold;
